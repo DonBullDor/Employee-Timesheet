@@ -1,0 +1,27 @@
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+    xmlns:c="http://java.sun.com/jstl/core"
+	template="/template/index.xhtml">
+	<ui:param name="page_name" value="index" />
+	<ui:define name="content2">
+   <h:form id="form">
+   <p:growl id="growl" life="2000" />
+<h:panelGrid columns="2">
+	<h:outputText value="Nom de la formation"/> <h:inputText value="#{gestionFormationBean.nom_formation}"/> 
+	<h:outputText value="Description"/> <h:inputText value="#{gestionFormationBean.description_formation}"/> 
+	<h:outputText value="Niveau"/> <h:inputText value="#{gestionFormationBean.niveau_formation}"/> 
+	<h:outputText value="Durée"/> <h:inputText value="#{gestionFormationBean.duree_formation}"/>
+		<p:outputLabel for="date1" value="Date debut :" />
+        <p:datePicker id="date1" value="#{gestionFormationBean.dateDeb_formation}" showIcon="true" />	
+        <h:outputText value="Prix"/> <h:inputText value="#{gestionFormationBean.prix_formation}"/>
+    <p:commandButton value="Ajouter" id="add" update ="growl" action="#{gestionFormationBean.ajoutFormation()}" style="margin-right:20px;" styleClass="ui-priority-primary" />	<h:message for="btn"/>
+	</h:panelGrid>
+   </h:form>
+   
+	</ui:define>
+</ui:composition>

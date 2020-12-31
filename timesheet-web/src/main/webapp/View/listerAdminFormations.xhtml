@@ -1,0 +1,107 @@
+ <ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:a="http://xmlns.jcp.org/jsf/passthrough" lang="fr"
+    xmlns:c="http://java.sun.com/jstl/core"
+    xmlns:ezcomp="http://xmlns.jcp.org/jsf/composite/ezcomp"
+	template="/template/index.xhtml">
+	<ui:param name="page_name" value="index" />
+	<ui:define name="content2">
+  <style type="text/css">
+    .old {
+        background-color: #fca752 !important;
+        background-image: none !important;
+        color: #000000 !important;
+    }
+</style>
+	
+	<h:form id="form">
+			<p:growl id="growl" showDetail="true" sticky="false" life="3000"/>   
+ 		<p:dataTable id="datatable" var="formation" value="#{gestionFormationBean.formations}"  rowStyleClass="old"
+ 				selectionMode="single" selection="#{gestionFormationBean.selectedFormation}" rowKey="#{formation.id_formation}">
+        	<f:facet name="header">
+            	Liste des formations
+        	</f:facet>
+        		<p:column headerText="Nom">
+        			<h:outputText value="#{formation.nom_formation}" />
+        		</p:column>
+        		<p:column headerText="Description">
+        			<h:outputText value="#{formation.description_formation}" />
+        		</p:column>
+        	<f:facet name="footer"> 
+        		<p:commandButton process="datatable" update=":form:add" value="Ajouter" oncomplete="PF('Ajouter').show()"/> 
+         		<p:commandButton process="datatable" update=":form:pan" value="Modifier" oncomplete="PF('Modifier').show()"/>
+         		<p:commandButton process="datatable" update=":form:suppr" value="Supprimer" oncomplete="PF('Suppr').show()"/>
+         		<p:commandButton id="btn" value="Détaille" action="#{gestionFormationBean.detail()}"/>
+         	</f:facet>
+    	</p:dataTable>  
+    		<p:dialog modal="true" showEffect="fade" resizable="false" widgetVar="Suppr" 
+    		header="Êtes vous sur de vouloir supprimer">
+        	<p:panel id="suppr">
+        	<p:panelGrid>
+        	<p:outputLabel style="font: message-box"></p:outputLabel>
+    	</p:panelGrid>
+    		<p:toolbar>
+        		<f:facet name="right">
+            		<p:commandButton actionListener="#{gestionFormationBean.supprimerFormation()}" 
+            		update=":form:growl" value="OUI"  ajax="false"/>
+            	</f:facet>
+       		</p:toolbar>
+    	</p:panel>  
+        	</p:dialog>
+         <p:dialog widgetVar="Modifier" header="Modifier" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+             
+         <p:panel id="pan" style="text-align:center;">
+         <p:panelGrid columns="2" rendered="#{not empty gestionFormationBean.selectedFormation}">                      
+        <p:outputLabel for="nom1" value="Nom : " />
+         <p:inputText id="nom1" value="#{gestionFormationBean.selectedFormation.nom_formation}"></p:inputText>
+        <p:outputLabel for="description1" value="Description : " />
+        <p:inputText id="description1" value="#{gestionFormationBean.selectedFormation.description_formation}"></p:inputText>
+        <p:outputLabel for="duree1" value="Durée : " />
+        <p:inputText id="duree1" value="#{gestionFormationBean.selectedFormation.duree_formation}"></p:inputText>
+        <p:outputLabel for="niveau1" value="Niveau : " />
+        <p:inputText id="niveau1" value="#{gestionFormationBean.selectedFormation.niveau_formation}"></p:inputText>
+        <p:outputLabel for="date1" value="Date debut :" />
+        <p:datePicker id="date1" value="#{gestionFormationBean.dateDeb_formation}" showIcon="true" />
+        <p:outputLabel for="prix1" value="Prix : " />
+    	<p:inputText id="prix1" value="#{gestionFormationBean.selectedFormation.prix_formation}"></p:inputText>
+                    </p:panelGrid>
+                </p:panel>
+                <p:toolbar>
+                    <f:facet name="left">
+       <p:commandButton value="Modifier" id="modifff"  action="#{gestionFormationBean.modifierFormation()}" 
+       update=":form:datatable, :form:growl" ajax="false" style="margin-right:20px;" styleClass="ui-priority-primary" />
+                        	<h:message for="modifff"/>
+                    </f:facet>
+                </p:toolbar>
+             </p:dialog>
+<p:dialog widgetVar="Ajouter" header="Ajouter une formation" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+         <p:panel id="add" style="text-align:center;">
+               <p:panelGrid columns="2">                      
+	<h:outputText value="Nom de la formation"/> <h:inputText value="#{gestionFormationBean.nom_formation}"/> 
+	<h:outputText value="Description"/> <h:inputText value="#{gestionFormationBean.description_formation}"/> 
+	<h:outputText value="Niveau"/> <h:inputText value="#{gestionFormationBean.niveau_formation}"/> 
+	<h:outputText value="Durée"/> <h:inputText value="#{gestionFormationBean.duree_formation}"/>
+		<p:outputLabel for="date11" value="Date debut :" />
+        <p:datePicker id="date11" value="#{gestionFormationBean.dateDeb_formation}" showIcon="true" />	
+        <h:outputText value="Prix"/> <h:inputText value="#{gestionFormationBean.prix_formation}"/>
+			</p:panelGrid>
+                </p:panel>
+                <p:toolbar>
+                    <f:facet name="left">
+       <p:commandButton value="Ajouter" id="ajouut"  action="#{gestionFormationBean.ajoutFormation()}" 
+       update=":form:datatable, :form:growl" ajax="false" style="margin-right:20px;" styleClass="ui-priority-primary" />
+                        	<h:message for="ajouut"/>
+                    </f:facet>
+                </p:toolbar>
+               
+             </p:dialog>
+             
+             
+ 	</h:form>
+ 	
+	</ui:define>
+</ui:composition>
